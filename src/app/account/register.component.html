@@ -1,0 +1,57 @@
+﻿<div class="card">
+    <h4 class="card-header">Please register your details (* required):</h4>
+    <div class="card-body">
+        <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="firstName">First Name:*</label>
+                <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.firstName }" />
+                <span class="invalid-feedback">
+                    {{ displayMessage.firstName }}
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name:*</label>
+                <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.lastName }" />
+                <span class="invalid-feedback">
+                    {{ displayMessage.lastName }}
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:*</label>
+                <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.email }" />
+                <span class="invalid-feedback">
+                    {{ displayMessage.email }}
+                </span>
+            </div>
+            <div formGroupName="passwordGroup">
+                <div class="form-group">
+                    <label for="password">Password:*</label>
+                    <input [type]="passwordInputType" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.password }" />
+                    <span class="invalid-feedback">
+                        {{ displayMessage.password }}
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Confirm Password:*</label>
+                    <div class="flexContainer">
+                        <input [type]="passwordInputType" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.passwordConfirm || displayMessage.passwordGroup }" />
+                        <button class="btn btn-outline-secondary mr-3" type="button" title="Show password" (click)="showPassword()">{{passwordToggleMessage}}</button>      
+                    </div>
+                    <span class="invalid-feedback">
+                        {{ displayMessage.passwordConfirm + displayMessage.passwordGroup  }}
+                    </span>
+                    <span class="password-description">
+                        Your password must contain at least 1 digit, 1 uppercase letter, and 1 lowercase letter and must be a minimum of 8 characters
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" [disabled]="!form.valid" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Register
+                </button>
+                <a routerLink="../login" class="btn btn-link">Login</a>
+            </div>
+        </form>
+    </div>
+</div>

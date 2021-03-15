@@ -1,0 +1,42 @@
+﻿<!-- main menu -->
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a class="nav-item nav-link" routerLink="/for-sale" routerLinkActive="active">For Sale</a>
+        <a class="nav-item nav-link" routerLink="/sell" routerLinkActive="active">Sell</a>
+    </div>
+    <div class="navbar-nav ml-auto" *ngIf="user">
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+    <div class="navbar-nav ml-auto" *ngIf="!user">
+        <a class="nav-item nav-link" routerLink="/account/register" routerLinkActive="active">Register</a>
+        <a class="nav-item nav-link" routerLink="/account/login" routerLinkActive="active">Login</a>
+    </div>
+</nav>
+<!--authenticated user menu-->
+<nav class="navbar navbar-expand navbar-dark" style="background-color: #5e5e5e;" *ngIf="user">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/my-adverts" routerLinkActive="active">My adverts</a>
+        <a class="nav-item nav-link" routerLink="/my-profile" routerLinkActive="active">My profile</a>
+        <a class="nav-item nav-link" routerLink="/manage" routerLinkActive="active">My account</a>
+        <a class="nav-item nav-link" routerLink="/seller-profile" routerLinkActive="active">My seller profile</a>
+        <a class="nav-item nav-link" routerLink="/favourites" routerLinkActive="active">My favourites</a>
+        <a class="nav-item nav-link" routerLink="/for-sale" routerLinkActive="active">Buy</a>
+        <a class="nav-item nav-link" routerLink="/sell-house" routerLinkActive="active">Sell</a>
+    </div>
+    <div class="navbar-nav ml-auto">
+        <a class="nav-item nav-link">Welcome {{user.firstName}}!</a>
+
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+    <router-outlet></router-outlet>
+    <alert></alert>
+</div>
+
+<!--footer-->
+<footer class="footer">
+    <p>Author: Regardt Visagie <a href="mailto:regardthvisagie@gmail.com">regardthvisagie@gmail.com</a></p>
+</footer>

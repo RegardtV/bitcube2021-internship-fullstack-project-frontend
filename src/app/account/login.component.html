@@ -1,0 +1,31 @@
+﻿<div class="card">
+    <h4 class="card-header">Login</h4>
+    <div class="card-body">
+        <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.email }" />
+                <span class="invalid-feedback">
+                    {{ displayMessage.email }}
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <div class="flexContainer">
+                    <input [type]="passwordInputType" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.password }" />
+                    <button class="btn btn-outline-secondary mr-3" type="button" title="Show password" (click)="showPassword()">{{passwordToggleMessage}}</button>  
+                </div>
+                <span class="invalid-feedback">
+                    {{ displayMessage.password }}
+                </span>
+            </div>
+            <div class="form-group">
+                <button [disabled]="loading" [disabled]="!form.valid" class="btn btn-primary">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Login
+                </button>
+                <a routerLink="../register" class="btn btn-link">Register</a>
+            </div>
+        </form>
+    </div>
+</div>
