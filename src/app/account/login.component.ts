@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
     form: FormGroup;
     msgProcessor: MessageProcessor;
     loading: boolean = false;
-    submitted: boolean = false;
     returnUrl: string;
     passwordToggleMessage: string = 'show password';
     passwordInputType = 'password';
@@ -53,11 +52,10 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() {
         this.form = this.formBuilder.group({
-            email: ['', [Validators.required, Validators.minLength(this.emailMinChar),
-                        Validators.maxLength(this.maxChars), Validators.email, WhitespaceValidator.removeSpaces]],
-            password: ['', [Validators.required, Validators.maxLength(this.maxChars),
-                            Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,100}$/), 
-                            WhitespaceValidator.removeSpaces]]
+            email: ['', [WhitespaceValidator.removeSpaces, Validators.required, Validators.email,
+                        Validators.minLength(this.emailMinChar), Validators.maxLength(this.maxChars)]],
+            password: ['', [WhitespaceValidator.removeSpaces, Validators.required, 
+                            Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,100}$/), Validators.maxLength(this.maxChars)]]
         });
 
         // get return url from route parameters or default to '/'
@@ -90,8 +88,6 @@ export class LoginComponent implements OnInit {
     }
     
     onSubmit(): void {
-        this.submitted = true;
-
         // reset alerts on submit
         this.alertService.clear();
 

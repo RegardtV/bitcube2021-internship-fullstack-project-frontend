@@ -1,0 +1,87 @@
+<div class="card">
+    <h4 class="card-header">{{ pageTitle }}</h4>
+    <div class="card-body">
+        <form novalidate (ngSubmit)="onSubmit()" [formGroup]="form">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="headerId">Heading:* </label>
+                <div class="col-md-8">
+                    <input class="form-control" id="headerId" type="text" placeholder="Enter heading... " formControlName="header"
+                        [ngClass]="{'is-invalid': displayMessage.header}" />
+                    <span class="invalid-feedback">
+                        {{ displayMessage.header}}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="descriptionId">Description:* </label>
+                <div class="col-md-8">
+                    <textarea class="form-control" id="descriptionId" type="text" placeholder="Enter description..."
+                        formControlName="description" [ngClass]="{'is-invalid': displayMessage.description}">
+                    </textarea>
+                    <span class="invalid-feedback">
+                        {{ displayMessage.description }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">Province:* </label>
+                <div class="col-md-8">
+                    <select class="form-control" id="provinceId" (change)="onChangeProvince($event.target.value)"
+                        formControlName="province" [ngClass]="{'is-invalid': displayMessage.province}">
+                        <option value="" disabled selected>Select province...</option>
+                        <option *ngFor="let province of provinces; let i = index" [value]="provinces[i].name">
+                            {{provinces[i].name}}
+                        </option>
+                    </select>
+                    <span class="invalid-feedback">
+                        {{ displayMessage.province }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">City:* </label>
+                <div class="col-md-8">
+                    <select class="form-control" id="cityId" 
+                        formControlName="city" [ngClass]="{'is-invalid': displayMessage.city}">
+                        <option value="" disabled selected>Select city...</option>
+                        <option *ngFor="let city of cities; let i = index" [value]="cities[i].name">
+                            {{ cities[i].name }}
+                        </option>
+                    </select>
+                    <span class="invalid-feedback">
+                        {{ displayMessage.city }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label" for="priceId">Price:* </label>
+                <div class="col-md-8">
+                    <input  class="form-control" 
+                            id="priceId" 
+                            type="number"
+                            step='10000.000'
+                            (blur)="transformPrice()" 
+                            [value]="formattedPrice"
+                            placeholder="Enter price..."
+                            formControlName="price"
+                            [ngClass]="{'is-invalid': displayMessage.price}" />
+                    <span class="invalid-feedback">
+                        {{ displayMessage.price }}
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-4">
+                    <button class="btn btn-primary" 
+                            type="submit"
+                            [title]="form.valid ? 'Save your entered data' : 'Disabled until the form data is valid'"
+                            [disabled]="!form.valid || loading">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Publish
+                    </button>
+                    <a routerLink="/my-adverts" class="btn btn-link">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

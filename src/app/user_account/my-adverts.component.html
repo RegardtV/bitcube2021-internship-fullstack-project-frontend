@@ -1,0 +1,60 @@
+<div class="card">
+    <h4 class="card-header">{{ pageTitle }}</h4>
+    <div class="card-body">
+        <div class="row">
+            <h5 class="col-md-2">Search:</h5>
+            <div class="col-md-5">
+                <input type="text" [formControl]="filterControl" />
+            </div>
+            <button class="col-md-5" routerLink="add" class="btn btn-primary">Add Advert</button>
+        </div>
+        <div class="row" *ngIf="listFilter">
+            <div class="col-md-6">
+                <h5>Filtered by: {{ listFilter }}</h5>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </thead>
+                <tbody *ngIf="adverts && adverts.length">
+                    <tr *ngFor="let advert of pageOfAdverts.reverse()">
+                        <td style="width: 90%">
+                            <app-advert-detail [advert]="advert" ></app-advert-detail>
+                        </td>
+                        <td style="width: 10%">
+                            <h4 *ngIf="advert.state==='Hidden'"><span style="display:inline-block; width:100px"
+                                    class="badge badge-secondary badge-pill">{{ advert.state }}</span></h4>
+                            <h4 *ngIf="advert.state==='Live'"><span style="display:inline-block; width:100px"
+                                    class="badge badge-success badge-pill">{{ advert.state }}</span></h4>
+                            <div class="dropdown">
+                                <button class="btn btn-primary btn-block dropdown-toggle" type="button"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" routerLink="edit/{{advert.id}}">Edit Advert</a>
+                                    <span *ngIf="advert.state==='Live'">
+                                        <a class="dropdown-item" (click)="hideAdvert(advert)">Hide Advert</a>
+                                    </span>
+                                    <span *ngIf="advert.state==='Hidden'">
+                                        <a class="dropdown-item" (click)="showAdvert(advert)">Show Advert</a>
+                                    </span>
+                                    <a class="dropdown-item" (click)="onDelete(advert)">Delete Advert</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <div *ngIf="loading" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </div>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AccountService } from '@app/_services';
+import { error } from 'selenium-webdriver';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -16,11 +17,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.accountService.logout();
             }
 
-            if (err.status === 0) {
+            if (err.status === 0) 
                 return throwError(err.statusText);
-            } else {
-                return throwError(err.error);
-            }
+
+            const error = err.error.message || err.error;
+            return throwError(error);
+
         }))
     }
 }
