@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChildren } from '@angular/core';
 import { FormControlName, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageProcessor } from '@app/_helpers';
@@ -7,6 +7,7 @@ import { Advert, City, User } from '@app/_models';
 import { Province } from '@app/_models/province';
 import { AccountService, AlertService } from '@app/_services';
 import { AdvertService } from '@app/_services/advert.service';
+import { UserService } from '@app/_services/user.service';
 import { StringValidator } from '@app/_validators/string.validator';
 import {  Observable, fromEvent, merge } from 'rxjs';
 import { debounceTime, first } from 'rxjs/operators';
@@ -69,6 +70,7 @@ export class AddEditAdvertComponent implements OnInit {
     constructor(private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
+        private userService: UserService,
         private adService: AdvertService,
         private accountService: AccountService,
         private alertService: AlertService) {
@@ -115,7 +117,7 @@ export class AddEditAdvertComponent implements OnInit {
         });
 
         if (!this.isAddMode) {
-            this.adService.getUserAdvertById(this.user.id, this.advertId)
+            this.userService.getUserAdvertById(this.user.id, this.advertId)
                 .pipe(first())
                 .subscribe({
                     next: advert => {
@@ -132,6 +134,11 @@ export class AddEditAdvertComponent implements OnInit {
                     error: err => this.alertService.error(err)
                 });
         }
+        
+        this.form.get("province").valueChanges
+        .subscribe((provinceName: string) => {
+            this.onChangeProvince(provinceName);
+        })
     }
 
     ngAfterViewInit(): void {
@@ -194,7 +201,7 @@ export class AddEditAdvertComponent implements OnInit {
         advert.date = dateGen.getCurrentDate() // set date property to current date
         advert.state = "Live";
 
-        this.adService.createUserAdvertById(this.user.id, advert)
+        this.userService.createUserAdvertById(this.user.id, advert)
             .pipe(first())
             .subscribe({
                 next: advert => {
@@ -213,7 +220,7 @@ export class AddEditAdvertComponent implements OnInit {
 
         const advert = { ...this.advert, ...this.form.value };
 
-        this.adService.updateUserAdvertById(this.user.id, this.advertId, advert)
+        this.userService.updateUserAdvertById(this.user.id, this.advertId, advert)
             .pipe(first())
             .subscribe({
                 next: advert => {

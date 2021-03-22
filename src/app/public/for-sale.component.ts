@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Advert, User } from '@app/_models';
 import { AccountService, AlertService } from '@app/_services';
-import { UserService } from '@app/_services/user.service';
+import { AdvertService } from '@app/_services/advert.service';
 import * as moment from 'moment';
 
 @Component({
-    selector: 'app-my-adverts',
-    templateUrl: './my-adverts.component.html'
+    selector: 'app-for-sale',
+    templateUrl: './for-sale.component.html'
 })
-export class MyAdvertsComponent implements OnInit {
+export class ForSaleComponent implements OnInit {
 
-    pageTitle: string = 'My Adverts';
+    pageTitle: string = 'Homes For Sale';
     listFilter: string = '';
     adverts: Advert[] = [];
     filteredAdverts: Advert[] = [];
@@ -20,16 +20,12 @@ export class MyAdvertsComponent implements OnInit {
     filterControl: FormControl = new FormControl('');
     orderBy: FormControl = new FormControl('1');
     
-    private user: User;
 
-    constructor(private accountService: AccountService, 
-                private userService: UserService,
-                private alertService: AlertService) {
-        this.accountService.user.subscribe(x => this.user = x);
-    }
+    constructor(private adService: AdvertService,
+                private alertService: AlertService) {}
 
     ngOnInit(): void {
-        this.getAllUserAdverts();
+        this.getAllAdverts();
         // subscribe to changes in filterControl to update filter for lists to display
         this.filterControl.valueChanges
             .subscribe((value: string) => {
@@ -46,39 +42,6 @@ export class MyAdvertsComponent implements OnInit {
     onChangePage(pageOfAdverts: Advert[]): void {
         // update current page of items
         this.pageOfAdverts = pageOfAdverts;
-    }
-
-    hideAdvert(advert: Advert): void {
-        this.loading = true;
-        advert.state = "Hidden";
-        this.userService.updateUserAdvertById(this.user.id, advert.id, advert)
-            .subscribe({
-                next: () => this.getAllUserAdverts(),
-                error: (err: any) => this.alertService.error(err)
-            });
-    }
-
-    showAdvert(advert: Advert): void {
-        this.loading = true;
-        advert.state = "Live";
-        this.userService.updateUserAdvertById(this.user.id, advert.id, advert)            
-            .subscribe({
-                next: () => this.getAllUserAdverts(),
-             error: (err: any) => this.alertService.error(err)
-            });
-    }
-
-    onDelete(advert: Advert): void {
-        if (confirm('Are you sure you want to delete this advert? This action cannot be undone, are you sure you want to continue?')) {
-            this.loading = true;
-            // delete advert
-            advert.state = "Deleted";
-            this.userService.updateUserAdvertById(this.user.id, advert.id, advert) 
-                .subscribe({
-                    next: () => this.getAllUserAdverts(),
-                    error: (err: any) => this.alertService.error(err)
-                });
-        }
     }
 
     // private method to pefrom filter based on filter input
@@ -129,13 +92,12 @@ export class MyAdvertsComponent implements OnInit {
     }
 
     // private method to get currentUser adverts and assign to adverts and filtered adverts lists
-    private getAllUserAdverts(): void {
-        this.userService.getAllUserAdverts(this.user.id).subscribe({
+    private getAllAdverts(): void {
+        this.adService.getAllAdverts().subscribe({
             next: (adverts: Advert[]) => {
                 this.loading = false;
-                this.adverts = adverts.filter((ad: Advert) => ad.state !== "Deleted");
-                this.filteredAdverts = this.listFilter ? this.performFilter(this.listFilter) : this.adverts;
-                this.pageOfAdverts = this.performSort(this.orderBy.value);
+                this.adverts = adverts.filter((ad: Advert) => ad.state !== "Deleted" && ad.state !== "Hidden");
+                this.filteredAdverts = this.adverts;
             },
             error: (err: any) => {
                 this.loading = false;

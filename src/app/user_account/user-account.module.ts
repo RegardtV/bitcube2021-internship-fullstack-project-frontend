@@ -8,14 +8,14 @@ import { UserAccountLayoutComponent } from './user-account-layout.component';
 import { AddEditAdvertComponent } from './add-edit-advert.component';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { MyAdvertsComponent } from './my-adverts.component';
-import { AdvertDetailComponent } from './advert-detail.component';
+import { MyAdvertsListComponent } from './my-adverts-list.component';
 
 
 
 
 @NgModule({
     declarations: [
-        AdvertDetailComponent,
+        MyAdvertsListComponent,
         MyAdvertsComponent,
         AddEditAdvertComponent,
         UserAccountLayoutComponent

@@ -71,6 +71,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
+        
         this.form = this.formBuilder.group({
             firstName: ['', [WhitespaceValidator.removeSpaces, Validators.required,
             Validators.minLength(this.firstNameMinChar), Validators.maxLength(this.maxChars)]],

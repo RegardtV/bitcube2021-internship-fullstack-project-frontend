@@ -8,39 +8,25 @@ import { Advert, City, Province, User } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class AdvertService {
-    constructor( private router: Router, private http: HttpClient) {}
+    constructor( private http: HttpClient) {}
 
-    getAllUserAdverts(userId: number): Observable<Advert[]> {
-        return this.http.get<Advert[]>(`${environment.apiUrl}/users/${userId}/adverts`);
+    getAllAdverts(): Observable<Advert[]> {
+        return this.http.get<Advert[]>(`${environment.apiUrl}/adverts`);
     }
 
-    getUserAdvertById(userId: number, advertId: number): Observable<Advert> {
-        return this.http.get<Advert>(`${environment.apiUrl}/users/${userId}/adverts/${advertId}`);
-    }
-
-    createUserAdvertById(userId: number, advert: Advert): Observable<Advert> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.http.post<Advert>(`${environment.apiUrl}/users/${userId}/adverts`, advert, { headers });
+    getAdvertById(advertId: number): Observable<Advert> {
+        return this.http.get<Advert>(`${environment.apiUrl}/adverts/${advertId}`);
     }
     
-    updateUserAdvertById(userId: number, advertId: number, advert: Advert): Observable<{}> {
-        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        return this.http.put(`${environment.apiUrl}/users/${userId}/adverts/${advertId}`, advert, { headers });
-    }
-
-    deleteAdvert(id: number): Observable<{}> {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`);
-    }
-
     getAllProvinces(): Observable<Province[]> {
-        return this.http.get<Province[]>(`${environment.apiUrl}/provinces`);
+        return this.http.get<Province[]>(`${environment.apiUrl}/adverts/provinces`);
     }
 
     getAllCities(): Observable<City[]> {
-        return this.http.get<City[]>(`${environment.apiUrl}/cities`);
+        return this.http.get<City[]>(`${environment.apiUrl}/adverts/cities`);
     }
 
     getAllProvinceCities(provinceId: number): Observable<City[]> {
-        return this.http.get<City[]>(`${environment.apiUrl}/provinces/${provinceId}/cities`);
+        return this.http.get<City[]>(`${environment.apiUrl}/adverts/provinces/${provinceId}/cities`);
     }
 }

@@ -3,6 +3,14 @@
     <div class="card-body">
         <form novalidate (ngSubmit)="onSubmit()" [formGroup]="form">
             <div class="form-group row">
+                <label class="col-md-2 col-form-label">Picture:* </label>
+                <div class="col-md-8">
+                    <img src="./assets/img/house_placeholder.jpg"
+                    class="img-responsive center-block"
+                    style="max-height:300px"/>
+                </div>
+            </div>
+            <div class="form-group row">
                 <label class="col-md-2 col-form-label" for="headerId">Heading:* </label>
                 <div class="col-md-8">
                     <input class="form-control" id="headerId" type="text" placeholder="Enter heading... " formControlName="header"
@@ -24,11 +32,11 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-2 col-form-label">Province:* </label>
+                <label class="col-md-2 col-form-label" for="provinceId">Province:* </label>
                 <div class="col-md-8">
-                    <select class="form-control" id="provinceId" (change)="onChangeProvince($event.target.value)"
+                    <select class="form-control" id="provinceId"
                         formControlName="province" [ngClass]="{'is-invalid': displayMessage.province}">
-                        <option value="" disabled selected>Select province...</option>
+                        <option value="" disabled selected> Select province... </option>
                         <option *ngFor="let province of provinces; let i = index" [value]="provinces[i].name">
                             {{provinces[i].name}}
                         </option>
@@ -39,7 +47,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-2 col-form-label">City:* </label>
+                <label class="col-md-2 col-form-label" for="cityId">City:* </label>
                 <div class="col-md-8">
                     <select class="form-control" id="cityId" 
                         formControlName="city" [ngClass]="{'is-invalid': displayMessage.city}">

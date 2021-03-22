@@ -1,0 +1,47 @@
+<div class="card">
+    <h4 class="card-header">{{ pageTitle }}</h4>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <label class="col-md-3 col-form-label" for="filterId"><h5> Filter: </h5></label>
+                    <input class="col-md-6" type="text" id="filterId" [formControl]="filterControl" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <label class="col-md-4 col-form-label" for="orderById"><h5> Order by: </h5></label>
+                    <div class="col-md-6">
+                        <select class="form-control" 
+                                id="orderById"
+                                [formControl]="orderBy">
+                            <option value="1"> Most recent </option>
+                            <option value="2"> Lowest price </option>
+                            <option value="3"> Highest price </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </thead>
+                <tbody *ngIf="adverts && adverts.length">
+                    <tr *ngFor="let advert of pageOfAdverts">
+                        <td>
+                            <app-for-sale-list [advert]="advert" routerLink="{{advert.id}}" ></app-for-sale-list>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <div *ngIf="loading" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center"></span>
+                    </div>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

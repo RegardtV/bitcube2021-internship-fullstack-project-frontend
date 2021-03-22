@@ -1,0 +1,23 @@
+<div class="container border border-secondary p-3" *ngIf="advert">
+    <div class="row">
+        <div class="col-md-3">
+            <img src="./assets/img/house_placeholder.jpg"
+            class="img-responsive"
+            style="max-height:150px" />
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <h6 class="col-md-12">{{ advert.header }}</h6>
+            </div>
+            <div class="row">
+                <div class="col-md-12">{{ advert.province + ", " + advert.city }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">{{ advert.price | currency: 'R' }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">{{ advert.date }}</div>
+            </div>
+        </div>
+    </div>
+</div>
