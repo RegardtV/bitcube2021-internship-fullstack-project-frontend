@@ -56,7 +56,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             pattern: 'Please enter a valid password.'
         },
         passwordConfirm: {
-            required: 'Please confirm your password.'
+            required: 'Please confirm your password.',
+            maxlength: `Your password must contain less than ${this.maxChars} characters.`,
+            pattern: 'Please enter a valid password.'
         }
     };
 
@@ -82,7 +84,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             passwordGroup: this.formBuilder.group({
                 password: ['', [WhitespaceValidator.removeSpaces, Validators.required,
                 Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,100}$/), Validators.maxLength(this.maxChars)]],
-                passwordConfirm: ['', [WhitespaceValidator.removeSpaces, Validators.required]]
+                passwordConfirm: ['', [WhitespaceValidator.removeSpaces, Validators.required,
+                    Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,100}$/), Validators.maxLength(this.maxChars)]]
             })
         });
 
@@ -147,6 +150,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             firstName: this.form.get('firstName').value,
             lastName: this.form.get('lastName').value,
             email: this.form.get('email').value,
+            phoneNumber: null,
             password: this.form.get('passwordGroup.password').value,
             token: null
         };

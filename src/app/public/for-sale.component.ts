@@ -97,7 +97,8 @@ export class ForSaleComponent implements OnInit {
             next: (adverts: Advert[]) => {
                 this.loading = false;
                 this.adverts = adverts.filter((ad: Advert) => ad.state !== "Deleted" && ad.state !== "Hidden");
-                this.filteredAdverts = this.adverts;
+                this.filteredAdverts = this.listFilter ? this.performFilter(this.listFilter) : this.adverts;
+                this.pageOfAdverts = this.performSort(this.orderBy.value);
             },
             error: (err: any) => {
                 this.loading = false;

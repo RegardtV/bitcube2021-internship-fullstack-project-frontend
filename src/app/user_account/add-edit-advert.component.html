@@ -37,8 +37,8 @@
                     <select class="form-control" id="provinceId"
                         formControlName="province" [ngClass]="{'is-invalid': displayMessage.province}">
                         <option value="" disabled selected> Select province... </option>
-                        <option *ngFor="let province of provinces; let i = index" [value]="provinces[i].name">
-                            {{provinces[i].name}}
+                        <option *ngFor="let province of provinces; let i = index" [value]="provinces[i].id">
+                            {{ provinces[i].name }}
                         </option>
                     </select>
                     <span class="invalid-feedback">
@@ -52,7 +52,7 @@
                     <select class="form-control" id="cityId" 
                         formControlName="city" [ngClass]="{'is-invalid': displayMessage.city}">
                         <option value="" disabled selected>Select city...</option>
-                        <option *ngFor="let city of cities; let i = index" [value]="cities[i].name">
+                        <option *ngFor="let city of cities; let i = index" [value]="cities[i].id">
                             {{ cities[i].name }}
                         </option>
                     </select>
@@ -87,7 +87,7 @@
                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                         Publish
                     </button>
-                    <a routerLink="/my-adverts" class="btn btn-link">Cancel</a>
+                    <a routerLink="/user-account/my-adverts" class="btn btn-link">Cancel</a>
                 </div>
             </div>
         </form>

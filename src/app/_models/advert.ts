@@ -3,7 +3,9 @@ export class Advert {
     header: string;
     description: string;
     province: string;
+    provinceId: number;
     city: string;
+    cityId: number;
     price: number;
     date: string;
     state: string;

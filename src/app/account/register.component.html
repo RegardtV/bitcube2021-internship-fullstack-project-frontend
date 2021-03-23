@@ -35,7 +35,7 @@
                     <label for="passwordConfirm">Confirm Password:*</label>
                     <div class="flexContainer">
                         <input [type]="passwordInputType" formControlName="passwordConfirm" class="form-control" [ngClass]="{ 'is-invalid': displayMessage.passwordConfirm || displayMessage.passwordGroup }" />
-                        <button class="btn btn-outline-secondary mr-3" type="button" title="Show password" (click)="showPassword()">{{passwordToggleMessage}}</button>      
+                        <button class="btn btn-outline-secondary" type="button" title="Show password" (click)="showPassword()">{{passwordToggleMessage}}</button>      
                     </div>
                     <span class="invalid-feedback d-block">
                         {{ displayMessage.passwordConfirm }} {{ displayMessage.passwordGroup  }}
@@ -46,7 +46,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <button [disabled]="loading || !form.valid" class="btn btn-primary">
+                <button [disabled]="loading || !form.valid" 
+                        class="btn btn-primary"
+                        [title]="form.valid ? 'Register your details' : 'Disabled until form data is valid'">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Register
                 </button>

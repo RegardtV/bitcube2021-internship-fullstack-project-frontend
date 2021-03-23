@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
             .subscribe(
                 data => {
                     this.alertService.success("Login successfull", { autoClose: true, keepAfterRouteChange: true });
-                    this.router.navigate(['/my-adverts']);
+                    this.router.navigate(['/user-account/my-adverts']);
                 },
                 error => {
                     this.alertService.error(error);

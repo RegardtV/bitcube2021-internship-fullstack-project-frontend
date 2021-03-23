@@ -9,6 +9,8 @@ import { AddEditAdvertComponent } from './add-edit-advert.component';
 import { JwPaginationModule } from 'jw-angular-pagination';
 import { MyAdvertsComponent } from './my-adverts.component';
 import { MyAdvertsListComponent } from './my-adverts-list.component';
+import { ManageAccountComponent } from './manage-account.component';
+import { SellerProfileComponent } from './seller-profile.component';
 
 
 
@@ -18,7 +20,9 @@ import { MyAdvertsListComponent } from './my-adverts-list.component';
         MyAdvertsListComponent,
         MyAdvertsComponent,
         AddEditAdvertComponent,
-        UserAccountLayoutComponent
+        UserAccountLayoutComponent,
+        ManageAccountComponent,
+        SellerProfileComponent
     ],
     imports: [
         CommonModule,

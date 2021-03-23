@@ -42,7 +42,25 @@ export class AccountService {
     }
 
     register(user: User): Observable<User> {
-        //const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
         return this.http.post<User>(`${environment.apiUrl}/users/register`, user);
     }
+
+    updateAccount(userId: number, user: User): Observable<User> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+        return this.http.put<User>(`${environment.apiUrl}/users/${userId}`, user)
+            .pipe(map(user => {
+                user.token = this.userValue.token;
+                // store user details and jwt token in local storage to keep user logged in between page refreshes
+                localStorage.setItem('user', JSON.stringify(user));
+                this.userSubject.next(user);
+                return user;
+            }));
+    }
+
+    checkUserPassword(userId: number, password: string): Observable<{}> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+        return this.http.post(`${environment.apiUrl}/users/${userId}/password`, { password }, { headers })
+    }
+
 }

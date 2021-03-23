@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 
 import { environment } from '@environments/environment';
-import { Advert } from '@app/_models';
+import { Advert, User } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

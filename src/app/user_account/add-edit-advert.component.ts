@@ -113,7 +113,7 @@ export class AddEditAdvertComponent implements OnInit {
             description: ['', [Validators.required, StringValidator.minLengthWithoutWhitespace(this.minChars), Validators.maxLength(this.descriptionMaxChars)]],
             province: ['', Validators.required],
             city: ['', Validators.required],
-            price: ['', [Validators.required, Validators.min(this.priceMinRange), Validators.max(this.priceMaxRange)]],
+            price: [0, [Validators.required, Validators.min(this.priceMinRange), Validators.max(this.priceMaxRange)]],
         });
 
         if (!this.isAddMode) {
@@ -125,9 +125,13 @@ export class AddEditAdvertComponent implements OnInit {
                         this.advert = advert;
                         this.form.get("header").setValue(advert.header);
                         this.form.get("description").setValue(advert.description);
-                        this.form.get("province").setValue(advert.province);
-                        this.onChangeProvince(advert.province);
-                        this.form.get("city").setValue(advert.city);
+                        
+                        const province = this.provinces.find(p => p.name === advert.province);
+                        this.form.get("province").setValue(province.id);
+                        this.onChangeProvince(this.form.get("province").value);
+                        
+                        const city = this.cities.find(c => c.name === advert.city)
+                        this.form.get("city").setValue(city.id);
                         this.form.get("price").setValue(advert.price);
                         this.transformPrice();
                     },
@@ -135,9 +139,9 @@ export class AddEditAdvertComponent implements OnInit {
                 });
         }
         
-        this.form.get("province").valueChanges
-        .subscribe((provinceName: string) => {
-            this.onChangeProvince(provinceName);
+        this.form.get('province').valueChanges
+        .subscribe((value: string) => {
+            this.onChangeProvince(value);
         })
     }
 
@@ -160,20 +164,15 @@ export class AddEditAdvertComponent implements OnInit {
         this.form.get("price").setValue(+this.formattedPrice);
     }
 
-    onChangeProvince(provinceName: string) {
-        const province = this.provinces.find(province => province.name === provinceName)
-        if (province) {
-            this.adService.getAllProvinceCities(province.id).subscribe({
-                next: cities => {
-                    this.cities = cities;
-                },
-                error: err => {
-                    this.alertService.error(err);
-                }
-            });
-        } else {
-            this.cities = null;
-        }
+    onChangeProvince(provinceId: string) {
+        this.adService.getAllProvinceCities(+provinceId).subscribe({
+            next: cities => {
+                this.cities = cities;
+            },
+            error: err => {
+                this.alertService.error(err);
+            }
+        });
     }
 
     onSubmit(): void {
@@ -196,7 +195,10 @@ export class AddEditAdvertComponent implements OnInit {
     }
 
     private createUserAdvert(): void {
+
         const advert: Advert = this.form.value;
+        advert.provinceId = +this.form.get('province').value;
+        advert.cityId = +this.form.get('city').value;
         var dateGen = new DateGenerator();
         advert.date = dateGen.getCurrentDate() // set date property to current date
         advert.state = "Live";
@@ -207,7 +209,7 @@ export class AddEditAdvertComponent implements OnInit {
                 next: advert => {
                     this.alertService.success('Advert added successfully', {  autoClose: true, keepAfterRouteChange: true });
                     this.form.reset();
-                    this.router.navigate(['.', { relativeTo: this.route }]);
+                    this.router.navigate(['/user-account/my-adverts']);
                 },
                 error: err => {
                     this.alertService.error(err);
@@ -218,7 +220,11 @@ export class AddEditAdvertComponent implements OnInit {
 
     private updateUserAdvert(): void {
 
-        const advert = { ...this.advert, ...this.form.value };
+        const advert: Advert = this.form.value;
+        advert.provinceId = +this.form.get('province').value;
+        advert.cityId = +this.form.get('city').value;
+        advert.date = this.advert.date;
+        advert.state = this.advert.state;
 
         this.userService.updateUserAdvertById(this.user.id, this.advertId, advert)
             .pipe(first())
@@ -226,7 +232,7 @@ export class AddEditAdvertComponent implements OnInit {
                 next: advert => {
                     this.alertService.success('Edit successful', {  autoClose: true, keepAfterRouteChange: true });
                     this.form.reset();
-                    this.router.navigate(['.', { relativeTo: this.route }]);
+                    this.router.navigate(['/user-account/my-adverts']);
                 },
                 error: err => {
                     this.alertService.error(err);

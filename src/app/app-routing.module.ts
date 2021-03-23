@@ -12,7 +12,7 @@ const routes: Routes = [
     { path: '', component: HomeComponent},
     { path: 'for-sale', loadChildren: publicModule},
     { path: 'account', loadChildren: accountModule},
-    { path: 'my-adverts', loadChildren: userAccountModule, canActivate: [AccountAuthGuard]},
+    { path: 'user-account', loadChildren: userAccountModule, canActivate: [AccountAuthGuard]},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
