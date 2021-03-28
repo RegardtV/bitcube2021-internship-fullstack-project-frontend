@@ -9,5 +9,6 @@ export class Advert {
     price: number;
     date: string;
     state: string;
+    featured: boolean;
     userId: number;
 }

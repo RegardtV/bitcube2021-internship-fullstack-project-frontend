@@ -199,6 +199,7 @@ export class ManageAccountComponent implements OnInit {
             email: this.form.get('email').value,
             password: this.form.get('passwordGroup.newPassword').value,
             phoneNumber: this.user.phoneNumber,
+            adminRole: false,
             token: null
         };
     }

@@ -1,0 +1,72 @@
+
+    <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="flexContainer">
+                    <input  class="form-control" 
+                            type="text" 
+                            formControlName="search"/>
+                    <button class="btn btn-primary mr-3 pr-5 pl-5" type="submit" title="Show password">
+                        Search
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    </button>
+                    <a class="btn btn-outline-secondary text-secondary pr-5 pl-5" (click)="onReset()">Reset</a>
+                </div>
+            </div>
+            <div class="col-md-2 col-form-label text-right">
+                <h5>Order By:</h5>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="orderById"
+                formControlName="orderBy">
+                    <option value="1" selected> Most recent </option>
+                    <option value="2"> Lowest price </option>
+                    <option value="3"> Highest price </option>
+            </select>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3" for="provinceId">Province: </label>
+            <label class="col-md-3" for="cityId">City: </label>
+            <label class="col-md-3" for="minPriceId">Min Price: </label>
+            <label class="col-md-3" for="maxPriceId">Max Price: </label>
+        </div>
+        <div class="row pb-2">
+            <div class="col-md-3">
+                <select class="form-control" id="provinceId"
+                    formControlName="province">
+                    <option value="0" selected> Any </option>                        
+                    <option *ngFor="let province of provinces; let i = index" [value]="provinces[i].id">
+                        {{ provinces[i].name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="cityId"
+                    formControlName="city">
+                    <option value="0" selected> Any </option>
+                    <option *ngFor="let city of cities; let i = index" [value]="cities[i].id">
+                        {{ cities[i].name }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="minPriceId"
+                    formControlName="minPrice">
+                    <option value="0" selected> Any </option>
+                    <option *ngFor="let price of prices; let i = index" [value]="prices[i]">
+                        {{ prices[i] | currency: 'R'}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-control" id="maxPriceId"
+                    formControlName="maxPrice">
+                    <option value="0"  selected> Any </option>
+                    <option *ngFor="let price of prices; let i = index" [value]="prices[i]">
+                        {{ prices[i] | currency: 'R'}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </form>

@@ -4,12 +4,16 @@ import { Observable } from 'rxjs';
 
 
 import { environment } from '@environments/environment';
-import { Advert, User } from '@app/_models';
+import { Advert, AdvertSearch, User } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
     constructor( private http: HttpClient ) {}
+
+    getUserById(userId: number): Observable<User> {
+        return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
+    }
     
     getAllUserAdverts(userId: number): Observable<Advert[]> {
         return this.http.get<Advert[]>(`${environment.apiUrl}/users/${userId}/adverts`);
@@ -29,4 +33,17 @@ export class UserService {
         return this.http.put(`${environment.apiUrl}/users/${userId}/adverts/${advertId}`, advert, { headers });
     }
 
+    getUserFavourites(userId: number): Observable<Advert[]> {
+        return this.http.get<Advert[]>(`${environment.apiUrl}/users/favourites/${userId}`)
+    }
+    
+    addRemoveUserFavourite(userId: number, advertId: number ): Observable<{}> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this.http.put(`${environment.apiUrl}/users/favourites`, { userId, advertId }, { headers });
+    }
+
+    searchUserAdverts(userId: number, searchObject: AdvertSearch): Observable<Advert[]> {
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        return this.http.post<Advert[]>(`${environment.apiUrl}/users/${userId}/adverts/search`, searchObject, { headers });
+    }
 }

@@ -33,14 +33,14 @@ export class SellerProfileComponent implements OnInit {
     displayMessage: { [key: string]: string } = {};
     validationMessages: { [key: string]: { [key: string]: string } } = {
         email: {
-            required: 'Please enter your email address.',
-            minlength: `Your email address must contain at least ${this.minChar} characters.`,
-            maxlength: `Your email address must contain less than ${this.emailMaxChars} characters.`,
-            email: 'Please enter a valid email address.'
+            required: 'Please enter your email address. ',
+            minlength: `Your email address must contain at least ${this.minChar} characters. `,
+            maxlength: `Your email address must contain less than ${this.emailMaxChars} characters. `,
+            email: 'Please enter a valid email address. '
         },
         phoneNumber: {
-            minlength: `Your phone number must contain at least ${this.minChar} digits.`,
-            maxlength: `Your phone number must contain less than ${this.phoneNumberMaxChars} digits.`,
+            minlength: `Your phone number must contain at least ${this.minChar} digits. `,
+            maxlength: `Your phone number must contain less than ${this.phoneNumberMaxChars} digits. `,
         }
     };
 
@@ -60,7 +60,8 @@ export class SellerProfileComponent implements OnInit {
                         Validators.email,
                         Validators.minLength(this.minChar), 
                         Validators.maxLength(this.emailMaxChars)]],
-            phoneNumber: ['', [ Validators.minLength(this.minChar), 
+            phoneNumber: ['', [ WhitespaceValidator.removeSpaces,
+                                Validators.minLength(this.minChar), 
                                 Validators.maxLength(this.phoneNumberMaxChars)]]
         });
     
@@ -119,6 +120,7 @@ export class SellerProfileComponent implements OnInit {
             email: this.form.get('email').value,
             phoneNumber: this.form.get('phoneNumber').value,
             password: null,
+            adminRole: false,
             token: null
         };
     }

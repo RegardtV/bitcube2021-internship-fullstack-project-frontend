@@ -1,7 +1,7 @@
 <div class="card">
     <h4 class="card-header">{{ pageTitle }}</h4>
     <div class="card-body">
-        <div class="row">
+        <div class="row pb-2">
             <div class="col-md-4">
                 <div class="row">
                     <label class="col-md-3 col-form-label" for="filterId"><h5> Filter: </h5></label>
@@ -34,7 +34,7 @@
                 <tbody *ngIf="adverts && adverts.length">
                     <tr *ngFor="let advert of pageOfAdverts">
                         <td style="width: 90%">
-                            <app-my-adverts-list routerLink="edit/{{advert.id}}" [advert]="advert" ></app-my-adverts-list>
+                            <app-my-adverts-list (click)="routeTo(advert.id)" [advert]="advert" ></app-my-adverts-list>
                         </td>
                         <td style="width: 10%">
                             <h4 *ngIf="advert.state==='Hidden'"><span style="display:inline-block; width:100px"
@@ -50,10 +50,16 @@
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" routerLink="edit/{{advert.id}}">Edit Advert</a>
                                     <span *ngIf="advert.state==='Live'">
-                                        <a class="dropdown-item" (click)="hideAdvert(advert)">Hide Advert</a>
+                                        <a class="dropdown-item" (click)="toggleShowHideAdvert(advert)">Hide Advert</a>
                                     </span>
                                     <span *ngIf="advert.state==='Hidden'">
-                                        <a class="dropdown-item" (click)="showAdvert(advert)">Show Advert</a>
+                                        <a class="dropdown-item" (click)="toggleShowHideAdvert(advert)">Show Advert</a>
+                                    </span>
+                                    <span *ngIf="advert.featured">
+                                        <a class="dropdown-item" (click)="toggleFeatured(advert)">Unfeature</a>
+                                    </span>
+                                    <span *ngIf="!advert.featured">
+                                        <a class="dropdown-item" (click)="toggleFeatured(advert)">Feature</a>
                                     </span>
                                     <a class="dropdown-item" (click)="onDelete(advert)">Delete Advert</a>
                                 </div>
@@ -62,8 +68,11 @@
                     </tr>
                 </tbody>
                 <tfoot>
+                    <div *ngIf="noAdvertsMessage">
+                        <h5 class="text-center p-4">{{ noAdvertsMessage }}</h5>
+                    </div>
                     <div *ngIf="loading" class="text-center">
-                        <span class="spinner-border spinner-border-lg align-center"></span>
+                        <span class="spinner-border spinner-border-lg align-center mt-2"></span>
                     </div>
                     <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
                 </tfoot>

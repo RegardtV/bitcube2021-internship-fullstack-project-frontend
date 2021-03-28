@@ -202,11 +202,12 @@ export class AddEditAdvertComponent implements OnInit {
         var dateGen = new DateGenerator();
         advert.date = dateGen.getCurrentDate() // set date property to current date
         advert.state = "Live";
+        advert.featured = false;
 
         this.userService.createUserAdvertById(this.user.id, advert)
             .pipe(first())
             .subscribe({
-                next: advert => {
+                next: () => {
                     this.alertService.success('Advert added successfully', {  autoClose: true, keepAfterRouteChange: true });
                     this.form.reset();
                     this.router.navigate(['/user-account/my-adverts']);
@@ -225,6 +226,7 @@ export class AddEditAdvertComponent implements OnInit {
         advert.cityId = +this.form.get('city').value;
         advert.date = this.advert.date;
         advert.state = this.advert.state;
+        advert.featured = this.advert.featured;
 
         this.userService.updateUserAdvertById(this.user.id, this.advertId, advert)
             .pipe(first())

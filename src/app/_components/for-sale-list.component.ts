@@ -7,7 +7,7 @@ import { Advert } from '@app/_models';
 })
 export class ForSaleListComponent implements OnInit {
 
-    @Input() advert: Advert | undefined;
+    @Input() advert: Advert = new Advert();
     
     constructor() { }
 

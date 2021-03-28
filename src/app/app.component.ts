@@ -5,8 +5,7 @@ import { User } from './_models';
 
 @Component({
     selector: 'app', 
-    templateUrl: 'app.component.html',
-    styleUrls: ['app.component.css'] 
+    templateUrl: 'app.component.html'
 })
 export class AppComponent {
     user: User;

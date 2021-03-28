@@ -152,6 +152,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             email: this.form.get('email').value,
             phoneNumber: null,
             password: this.form.get('passwordGroup.password').value,
+            adminRole: false,
             token: null
         };
     }

@@ -1,13 +1,18 @@
-<div class="container border border-secondary p-3" *ngIf="advert">
+<div class="container-fluid border border-secondary p-2" *ngIf="advert">
     <div class="row">
         <div class="col-md-3">
             <img src="./assets/img/house_placeholder.jpg"
             class="img-responsive"
-            style="max-height:150px" />
+            style="max-width:100%; height: auto;" />
         </div>
         <div class="col-md-9">
             <div class="row">
-                <h6 class="col-md-12">{{ advert.header }}</h6>
+                <div class="col-md-10">
+                    <h6>{{ advert.header }}</h6>
+                </div>
+                <div class="col-md-2">
+                    <div *ngIf="advert.featured" class="ml-auto mr-0 badge-dark text-center">Featured</div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-12">{{ advert.province + ", " + advert.city }}</div>

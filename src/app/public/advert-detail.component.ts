@@ -11,8 +11,9 @@ import { AdvertService } from '@app/_services/advert.service';
 
 export class AdvertDetailComponent implements OnInit {
     
-    advert: Advert = new Advert();
+    advert: Advert;
     advertId: number;
+    loading: boolean = true;
 
     constructor(private route: ActivatedRoute, 
                 private adService: AdvertService,
@@ -23,9 +24,11 @@ export class AdvertDetailComponent implements OnInit {
         this.adService.getAdvertById(this.advertId).subscribe({
             next: ad => {
                 this.advert = ad;
+                this.loading = false;
             },
             error: err => {
                 this.alertService.error(err);
+                this.loading = false;
             }
         });
     }

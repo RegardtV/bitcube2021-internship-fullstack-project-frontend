@@ -100,9 +100,13 @@ export class LoginComponent implements OnInit {
         this.accountService.login(this.form.get("email").value, this.form.get("password").value)
             .pipe(first())
             .subscribe(
-                data => {
+                user => {
                     this.alertService.success("Login successfull", { autoClose: true, keepAfterRouteChange: true });
+                    if (user.adminRole) {
+                        this.router.navigate(['/admin/user-management']);
+                    } else {
                     this.router.navigate(['/user-account/my-adverts']);
+                    }
                 },
                 error => {
                     this.alertService.error(error);

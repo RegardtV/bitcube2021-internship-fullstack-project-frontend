@@ -1,0 +1,27 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
+    <div class="carousel-inner">
+        <div *ngIf="noFeaturedAdvertsMessage">
+            <h5 class="text-center p-4">{{ noFeaturedAdvertsMessage }}</h5>
+        </div>
+        <div *ngIf="loading" class="text-center">
+            <span class="spinner-border spinner-border-lg align-center"></span>
+        </div>
+        <div class="carousel-item" *ngFor="let advert of adverts; let i = index" [ngClass]="{active: i == 0 }">
+            <div class="row">
+                <div class="offset-md-1 col-md-10">
+                    <div  class="my-highlight-hover">
+                    <app-for-sale-list [advert]="advert" (click)="routeTo(advert.id)"></app-for-sale-list>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>

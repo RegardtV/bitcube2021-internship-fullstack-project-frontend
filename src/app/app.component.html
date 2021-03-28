@@ -32,6 +32,12 @@
 
     </div>
 </nav>
+<!--admin user menu-->
+<nav class="navbar navbar-expand navbar-dark" style="background-color: #8b8a8a;" *ngIf="user && user.adminRole">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link" routerLink="/admin/user-management" routerLinkActive="active">User managment</a>
+    </div>
+</nav>
 
 <!-- main app container -->
 <div class="app-container" [ngClass]="{ 'bg-light': user }">

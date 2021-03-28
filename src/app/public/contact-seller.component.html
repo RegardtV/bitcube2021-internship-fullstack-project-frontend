@@ -1,0 +1,95 @@
+<div class="container">
+    <div class="card">
+        <h5 class="card-header"> {{ pageTitle }} </h5>
+        <div class="card-body" *ngIf="seller">
+            <div class="row">
+                <div class="col-md-9">{{ seller.firstName + " " + seller.lastName }}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">{{ seller.phoneNumber }}</div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-9">{{ seller.email  }}</div>
+            </div>
+            <form novalidate (ngSubmit)="onSubmit()" [formGroup]="form">
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="nameId">Name:* </label>
+                    <div class="col-md-9">
+                        <input  class="form-control" 
+                                id="nameId" 
+                                type="text" 
+                                formControlName="name"
+                                [ngClass]="{'is-invalid': displayMessage.name}" />
+                        <span class="invalid-feedback">
+                            {{ displayMessage.name }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="emailId">Email:* </label>
+                    <div class="col-md-9">
+                        <input  class="form-control" 
+                                id="emailId" 
+                                type="email" 
+                                formControlName="email"
+                                [ngClass]="{'is-invalid': displayMessage.email}" />
+                        <span class="invalid-feedback">
+                            {{ displayMessage.email }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="phoneId">Phone: </label>
+                    <div class="col-md-9">
+                        <input  class="form-control" 
+                                id="phoneId" 
+                                type="text" 
+                                formControlName="phone"
+                                [ngClass]="{'is-invalid': displayMessage.phone}" />
+                        <span class="invalid-feedback">
+                            {{ displayMessage.phone }}
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label" for="messageId">Message:* </label>
+                    <div class="col-md-9">
+                        <textarea  class="form-control" 
+                                    id="messageId" 
+                                    type="text" 
+                                    rows="3"
+                                    formControlName="message"
+                                    [ngClass]="{'is-invalid': displayMessage.message}">
+                        </textarea>
+                        <span class="invalid-feedback">
+                            {{ displayMessage.message }}
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="offset-md-3 col-md-2">
+                        <button class="btn btn-primary" 
+                                id="button2"        
+                                type="submit"
+                                [title]="form.valid ? 'Save your entered data' : 'Disabled until form data is valid'"
+                                [disabled]="!form.valid || loading">
+                            Send
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="btn" id="button1" onmousedown="event.preventDefault()" (click)="onAddFavourite()"
+                                [ngClass]="{'btn-success': !isFavourite, 
+                                            'text-light': !isFavourite,
+                                            'btn-outline-success': isFavourite,
+                                            'text-success': isFavourite}">
+                            {{ favouriteButtonText }}
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="loading" class="text-center mt-2 mb-2">
+            <span class="spinner-border spinner-border-lg align-center"></span>
+        </div>
+    </div>
+</div>

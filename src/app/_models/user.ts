@@ -5,5 +5,6 @@
     email: string;
     phoneNumber: string;
     password: string;
+    adminRole: boolean;
     token: string;
 }

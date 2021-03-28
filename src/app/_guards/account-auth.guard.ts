@@ -13,7 +13,15 @@ export class AccountAuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const user = this.accountService.userValue;
         if (user) {
-            // authorised so return true
+            // check if route is restricted by role
+            if (route.data.roles && !route.data.roles.includes(user.adminRole)) {
+                // role not authorized so redirect to home page
+                
+                this.router.navigate(['/account/login']);
+                return false;
+            }
+
+            // authorized so return true
             return true;
         }
 

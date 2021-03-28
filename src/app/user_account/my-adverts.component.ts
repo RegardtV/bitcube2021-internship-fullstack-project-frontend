@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Advert, User } from '@app/_models';
+import { Router } from '@angular/router';
+import { Advert, AdvertSearch, User } from '@app/_models';
 import { AccountService, AlertService } from '@app/_services';
 import { UserService } from '@app/_services/user.service';
 import * as moment from 'moment';
@@ -19,10 +20,12 @@ export class MyAdvertsComponent implements OnInit {
     loading: boolean = true;
     filterControl: FormControl = new FormControl('');
     orderBy: FormControl = new FormControl('1');
+    noAdvertsMessage: string = "";
     
     private user: User;
 
-    constructor(private accountService: AccountService, 
+    constructor(private router: Router,
+                private accountService: AccountService, 
                 private userService: UserService,
                 private alertService: AlertService) {
         this.accountService.user.subscribe(x => this.user = x);
@@ -35,11 +38,15 @@ export class MyAdvertsComponent implements OnInit {
             .subscribe((value: string) => {
                 this.listFilter = value;
                 this.filteredAdverts = this.listFilter ? this.performFilter(this.listFilter) : this.adverts;
-                this.pageOfAdverts = this.performSort(this.orderBy.value);
+                if (!this.filteredAdverts.length) {
+                    this.noAdvertsMessage = 'No adverts to show'
+                } else {
+                    this.noAdvertsMessage = '';
+                }
             })
         this.orderBy.valueChanges
-            .subscribe((value: number) => {
-                this.pageOfAdverts = this.performSort(value);
+            .subscribe((orderByValue: string) => {
+                this.searchUserAdverts(+orderByValue);
         })
     }
     
@@ -48,36 +55,37 @@ export class MyAdvertsComponent implements OnInit {
         this.pageOfAdverts = pageOfAdverts;
     }
 
-    hideAdvert(advert: Advert): void {
-        this.loading = true;
-        advert.state = "Hidden";
-        this.userService.updateUserAdvertById(this.user.id, advert.id, advert)
-            .subscribe({
-                next: () => this.getAllUserAdverts(),
-                error: (err: any) => this.alertService.error(err)
-            });
+    toggleShowHideAdvert(advert: Advert): void {
+        
+        if (advert.state === "Hidden"){
+            advert.state = "Live";
+        } else {
+            advert.state = "Hidden"
+        }
+
+        this.updateUserAdvertById(advert);
     }
 
-    showAdvert(advert: Advert): void {
-        this.loading = true;
-        advert.state = "Live";
-        this.userService.updateUserAdvertById(this.user.id, advert.id, advert)            
-            .subscribe({
-                next: () => this.getAllUserAdverts(),
-             error: (err: any) => this.alertService.error(err)
-            });
+    toggleFeatured(advert: Advert): void {
+        
+        if (advert.featured){
+            advert.featured = false;
+        } else {
+            advert.featured = true;
+        }
+
+        this.updateUserAdvertById(advert);
+    }
+
+    routeTo(advertId: number): void {
+        this.router.navigate([`user-account/my-adverts/edit/${advertId}`]);
     }
 
     onDelete(advert: Advert): void {
         if (confirm('Are you sure you want to delete this advert? This action cannot be undone, are you sure you want to continue?')) {
-            this.loading = true;
             // delete advert
             advert.state = "Deleted";
-            this.userService.updateUserAdvertById(this.user.id, advert.id, advert) 
-                .subscribe({
-                    next: () => this.getAllUserAdverts(),
-                    error: (err: any) => this.alertService.error(err)
-                });
+            this.updateUserAdvertById(advert);
         }
     }
 
@@ -90,57 +98,46 @@ export class MyAdvertsComponent implements OnInit {
         );
     }
 
-    // private method to perform sort based on selected "order by" criteria
-    private performSort(orderBy: number): Advert[] {
-        // most recent
-        if (orderBy == 1) {
-            return this.filteredAdverts.sort((ad1,ad2) => {
-                const date1 = moment(ad1.date,"dd-MM-yyyy").toDate();
-                const date2 = moment(ad2.date,"dd-MM-yyyy").toDate();
-                if (date1 < date2)
-                    return 1;
-                if (date1 > date2) 
-                    return -1;
-                return 0;
-            });
-        }
-        // highest price
-        if (orderBy == 2) {
-            return this.filteredAdverts.sort((ad1,ad2) => {
-                if (ad1.price > ad2.price)
-                    return 1;
-                if (ad1.price < ad2.price) 
-                    return -1;
-                return 0;
-            });
-        }
-        // lowest price
-        if (orderBy == 3) {
-            return this.filteredAdverts.sort((ad1,ad2) => {
-                if (ad1.price < ad2.price)
-                    return 1;
-                if (ad1.price > ad2.price) 
-                    return -1;
-                
-                return 0;
-            });
-        }
-        return this.filteredAdverts;
-    }
-
     // private method to get currentUser adverts and assign to adverts and filtered adverts lists
     private getAllUserAdverts(): void {
         this.userService.getAllUserAdverts(this.user.id).subscribe({
             next: (adverts: Advert[]) => {
                 this.loading = false;
-                this.adverts = adverts.filter((ad: Advert) => ad.state !== "Deleted");
+                this.adverts = adverts;
                 this.filteredAdverts = this.listFilter ? this.performFilter(this.listFilter) : this.adverts;
-                this.pageOfAdverts = this.performSort(this.orderBy.value);
+                if (!this.filteredAdverts.length) {
+                    this.noAdvertsMessage = 'No adverts to show'
+                } else {
+                    this.noAdvertsMessage = '';
+                }             
             },
             error: (err: any) => {
                 this.loading = false;
                 this.alertService.error(err);
             }
         });
+    }
+
+    private searchUserAdverts(orderByValue: number): void {
+        var searchObject = new AdvertSearch();
+        searchObject.orderBy = orderByValue;
+        this.userService.searchUserAdverts(this.user.id, searchObject).subscribe({
+            next: (adverts: Advert[]) => {
+                this.adverts = adverts;
+                this.filteredAdverts = this.listFilter ? this.performFilter(this.listFilter) : this.adverts;
+            },
+            error: (err: any) => {
+                this.alertService.error(err);
+            }
+        });
+    }
+
+    private updateUserAdvertById(advert: Advert): void {
+
+        this.userService.updateUserAdvertById(this.user.id, advert.id, advert)            
+        .subscribe({
+            next: () => this.getAllUserAdverts(),
+         error: (err: any) => this.alertService.error(err)
+        });     
     }
 }
