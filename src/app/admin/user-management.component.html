@@ -1,1 +1,71 @@
-<p>user-management works!</p>
+<div class="card">
+    <h4 class="card-header">{{ pageTitle }}</h4>
+    <div class="card-body">
+        <div class="row pb-2">
+            <label class="col-md-3 col-form-label" for="filterId"><h5> Filter last names: </h5></label>
+            <input class="col-md-6" type="text" id="filterId" [formControl]="filterControl" />
+        </div>
+        <jw-pagination [items]="filteredUsers" (changePage)="onChangePage($event)"></jw-pagination>
+        <form [formGroup]="form">
+        <div [formArrayName]="'userArray'">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="width:15%">Last Name</th>
+                    <th style="width:15%">First Name</th>
+                    <th style="width:50%">Email Address</th>
+                    <th style="width:5%">Role</th>
+                    <th style="width:5%"></th>
+                    <th style="width:10%"></th>
+                </tr>
+            </thead>
+            <tbody *ngIf="users && users.length">
+                    
+                        <tr *ngFor="let user of pageOfUsers">
+                            <td>{{ user.lastName }}</td>
+                            <td>{{ user.firstName }}</td>
+                            <td *ngIf="f[user.id-1].enabled" class="flexContainer"> 
+                                <input class="col-md-10" type="email" [formControlName]="user.id - 1"/>
+                                <button class="col-md-2 btn btn-outline-dark" type="button" (click)="saveEmail(user)">Save</button>
+                            </td>
+                            <td *ngIf="f[user.id-1].disabled">
+                                {{ user.email + " " }}<i class="fa fa-check fa-lg"></i>
+                            </td>
+                            <td *ngIf="user.adminRole">Admin</td>
+                            <td *ngIf="!user.adminRole">User</td>
+                            <td *ngIf="user.locked"><i class="fa fa-lock fa-lg"></i></td>
+                            <td *ngIf="!user.locked"><i class="fa fa-unlock fa-lg"></i></td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-block dropdown-toggle" 
+                                            type="button"
+                                            data-toggle="dropdown" 
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a *ngIf="f[user.id-1].disabled" class="dropdown-item" (click)="editEmail(user)">Edit Email</a>
+                                        <span *ngIf="user.locked">
+                                            <a class="dropdown-item" (click)="toggleLockUnlockUser(user)">Unlock Account</a>
+                                        </span>
+                                        <span *ngIf="!user.locked">
+                                            <a class="dropdown-item" (click)="toggleLockUnlockUser(user)">Lock Account</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                </tbody>
+        </table>
+        </div>
+        </form>
+        <div *ngIf="noUsersMessage">
+            <h5 class="text-center p-4">{{ noUsersMessage }}</h5>
+        </div>
+        <div *ngIf="loading" class="text-center">
+            <span class="spinner-border spinner-border-lg align-center mt-2"></span>
+        </div>
+        <jw-pagination [items]="filteredUsers" (changePage)="onChangePage($event)"></jw-pagination>
+    </div>
+</div>

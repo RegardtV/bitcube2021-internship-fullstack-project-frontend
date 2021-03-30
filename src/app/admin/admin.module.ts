@@ -4,12 +4,15 @@ import { CommonModule } from '@angular/common';
 import { AdminLayoutComponent } from './admin-layout.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { UserManagementComponent } from './user-management.component';
+import { JwPaginationModule } from 'jw-angular-pagination';
+
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        AdminRoutingModule
+        AdminRoutingModule,
+        JwPaginationModule
     ],
     declarations: [
         AdminLayoutComponent,

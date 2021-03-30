@@ -200,6 +200,7 @@ export class ManageAccountComponent implements OnInit {
             password: this.form.get('passwordGroup.newPassword').value,
             phoneNumber: this.user.phoneNumber,
             adminRole: false,
+            locked: false,
             token: null
         };
     }

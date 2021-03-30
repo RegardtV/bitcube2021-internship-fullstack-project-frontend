@@ -153,6 +153,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             phoneNumber: null,
             password: this.form.get('passwordGroup.password').value,
             adminRole: false,
+            locked: false,
             token: null
         };
     }

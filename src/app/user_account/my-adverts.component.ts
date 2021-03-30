@@ -57,11 +57,7 @@ export class MyAdvertsComponent implements OnInit {
 
     toggleShowHideAdvert(advert: Advert): void {
         
-        if (advert.state === "Hidden"){
-            advert.state = "Live";
-        } else {
-            advert.state = "Hidden"
-        }
+        advert.state === 'Hidden' ? advert.state = 'Live' : advert.state = 'Hidden'
 
         this.updateUserAdvertById(advert);
     }

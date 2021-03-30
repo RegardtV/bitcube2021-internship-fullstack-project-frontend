@@ -6,5 +6,6 @@
     phoneNumber: string;
     password: string;
     adminRole: boolean;
+    locked:  boolean;
     token: string;
 }

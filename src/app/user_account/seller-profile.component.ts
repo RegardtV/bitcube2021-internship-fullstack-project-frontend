@@ -121,6 +121,7 @@ export class SellerProfileComponent implements OnInit {
             phoneNumber: this.form.get('phoneNumber').value,
             password: null,
             adminRole: false,
+            locked: false,
             token: null
         };
     }
