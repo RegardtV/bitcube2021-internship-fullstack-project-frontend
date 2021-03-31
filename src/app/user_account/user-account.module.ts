@@ -11,6 +11,8 @@ import { MyAdvertsComponent } from './my-adverts.component';
 import { MyAdvertsListComponent } from './my-adverts-list.component';
 import { ManageAccountComponent } from './manage-account.component';
 import { SellerProfileComponent } from './seller-profile.component';
+import { SharedModule } from '@app/_components/shared.module';
+import { FavouritesComponent } from './favourites.component';
 
 
 
@@ -22,13 +24,15 @@ import { SellerProfileComponent } from './seller-profile.component';
         AddEditAdvertComponent,
         UserAccountLayoutComponent,
         ManageAccountComponent,
-        SellerProfileComponent
+        SellerProfileComponent,
+        FavouritesComponent
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         UserAccountRoutingModule,
-        JwPaginationModule
+        JwPaginationModule,
+        SharedModule
     ],
     providers: [],
 })

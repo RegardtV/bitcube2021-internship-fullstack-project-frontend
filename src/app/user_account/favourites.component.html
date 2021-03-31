@@ -1,0 +1,37 @@
+<div class="card">
+    <h4 class="card-header">{{ pageTitle }}</h4>
+    <div class="card-body">
+        <div class="row pb-2">
+            <label class="col-md-2 col-form-label" for="filterId"><h5> Filter favourites: </h5></label>
+            <input class="col-md-4" type="text" id="filterId" [formControl]="filterControl" />
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </thead>
+                <tbody *ngIf="adverts && adverts.length">
+                    <tr *ngFor="let advert of pageOfAdverts">
+                        <td style="width: 90%">
+                            <app-for-sale-list [advert]="advert" (click)="routeTo(advert.id)" ></app-for-sale-list>
+                        </td>
+                        <td style="width: 10%">
+                            <button class="btn btn-primary" (click)="onRemoveFavourite(advert)">
+                                Remove
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <div *ngIf="noFavouritesMessage">
+                        <h5 class="text-center p-4">{{ noFavouritesMessage }}</h5>
+                    </div>
+                    <div *ngIf="loading" class="text-center">
+                        <span class="spinner-border spinner-border-lg align-center mt-2"></span>
+                    </div>
+                    <jw-pagination [items]="filteredAdverts" (changePage)="onChangePage($event)"></jw-pagination>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

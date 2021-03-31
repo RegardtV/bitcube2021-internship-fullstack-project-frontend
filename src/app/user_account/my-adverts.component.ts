@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Advert, AdvertSearch, User } from '@app/_models';
 import { AccountService, AlertService } from '@app/_services';
 import { UserService } from '@app/_services/user.service';
-import * as moment from 'moment';
 
 @Component({
     selector: 'app-my-adverts',

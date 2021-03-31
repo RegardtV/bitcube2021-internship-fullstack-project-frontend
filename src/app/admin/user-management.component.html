@@ -3,7 +3,7 @@
     <div class="card-body">
         <div class="row pb-2">
             <label class="col-md-3 col-form-label" for="filterId"><h5> Filter last names: </h5></label>
-            <input class="col-md-6" type="text" id="filterId" [formControl]="filterControl" />
+            <input class="col-md-4" type="text" id="filterId" [formControl]="filterControl" />
         </div>
         <jw-pagination [items]="filteredUsers" (changePage)="onChangePage($event)"></jw-pagination>
         <form [formGroup]="form">

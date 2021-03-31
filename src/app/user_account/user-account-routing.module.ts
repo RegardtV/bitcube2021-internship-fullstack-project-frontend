@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddEditAdvertGuard } from '@app/_guards/add-edit-advert.guard';
 import { AddEditAdvertComponent } from './add-edit-advert.component';
+import { FavouritesComponent } from './favourites.component';
 import { ManageAccountComponent } from './manage-account.component';
 
 import { MyAdvertsComponent } from './my-adverts.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
             { path: 'my-adverts/edit/:id', canDeactivate: [AddEditAdvertGuard], component: AddEditAdvertComponent },
             { path: 'manage', component: ManageAccountComponent },
             { path: 'seller-profile', component: SellerProfileComponent },
+            { path: 'favourites', component: FavouritesComponent },
         ]
     }
 ];
